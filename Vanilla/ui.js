@@ -45,7 +45,7 @@ var getComments = function(){
         var time = new Date(comment.timestamp)
         var timestamp = time.valueOf();
         var postedTime = buildPostedString(comment, time, timestamp);
-        dom = `<div class="comment" id="${timestamp}">
+        dom += `<div class="comment" id="${timestamp}">
                       <div class="meta">
                         <div class="username">${comment.username}</div>
                         <div class="date">${postedTime}</div>
