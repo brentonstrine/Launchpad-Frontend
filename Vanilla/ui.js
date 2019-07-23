@@ -40,11 +40,12 @@ var getComments = function(){
 
   hitEndpoint(endpoint, "", function(response){
     if(response.type === "success") {
+      var dom = "";//create a string to put HTML into which will be inserted into the DOM
       response.comments.forEach(function(comment){
         var time = new Date(comment.timestamp)
         var timestamp = time.valueOf();
         var postedTime = buildPostedString(comment, time, timestamp);
-        var dom = `<div class="comment" id="${timestamp}">
+        dom = `<div class="comment" id="${timestamp}">
                       <div class="meta">
                         <div class="username">${comment.username}</div>
                         <div class="date">${postedTime}</div>
