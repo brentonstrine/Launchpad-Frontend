@@ -63,5 +63,5 @@ var getComments = function(){
 
 // When the DOM is done loading, get comments from the API
 window.addEventListener("DOMContentLoaded", function(){
-  //getComments();
+  getComments();
 });
