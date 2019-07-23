@@ -1,0 +1,33 @@
+/* Comments section */
+.comments .comment {
+  margin: 10px;
+  padding: 10px;
+  border: solid 1px gray;
+}
+.comments .username,
+.comments .date {
+  display: inline-block;
+  font-size: .8rem;
+}
+.comments .username {
+  font-weight: bold;
+}
+.comments .message {
+  margin-top: 10px;
+}
+
+/* Comment form section */
+.comment-form {
+    margin: 10px;
+    padding: 10px;
+}
+.comment-form textarea {
+  display: block;
+  width: 100%;
+  height: 200px;
+  margin: 10px 0;
+}
+.comment-form .submit-comment {
+  float: right;
+  padding: 1rem;
+}
