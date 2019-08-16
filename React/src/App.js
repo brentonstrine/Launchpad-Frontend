@@ -22,7 +22,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
+      <div class="form-container">
         <Comments items={this.state.items} />
         <Form
           handleSubmit={this.handleSubmit}
@@ -70,7 +70,7 @@ class App extends React.Component {
     this.setState({ items: this.state.items.concat(newItem) });
 
     console.log("state: ", this.state);
-    // this.storeData(this.state);
+    // this.storeData(this.state.items);
   };
 
   //POST to database
