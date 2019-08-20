@@ -12,7 +12,7 @@ export default class Comments extends React.Component {
                 <span className="date">{item.time}</span>
               </div>
             </div>
-            <div className="message">{item.text}</div>
+            <div className="message">{item.message}</div>
           </div>
         ))}
       </div>
