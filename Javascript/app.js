@@ -27,10 +27,12 @@ const getRemoteComments = async () => {
  */
 
 const getCommentHTML = comment => {
-    return `<div class="full-message">
-    <div class="user-name">${comment.username}</div>
+    return `<div class="comment">
+    <div class="meta">
+    <div class="user">${comment.username}</div>
     <div class="time">${comment.time}</div>
     <div class="message">${comment.message}</div>
+    </div>
     </div>`;
 };
 
@@ -62,7 +64,7 @@ const addCommentsToDOM = comments => {
      * called #meta and add the new comments we've just created
      * above.
      */
-    const div = document.querySelector('#meta');
+    const div = document.querySelector('#chat');
     div.innerHTML = holdComments;
 };
 
@@ -93,7 +95,11 @@ const form = document.querySelector('form');
 const formEvent = form.addEventListener('submit', async event => {
     event.preventDefault();
 
-    const time = Date.now();
+    // Handle the time a user posts a message by using the current time
+    const date = new Date();
+    const postedTime = date.toLocaleTimeString();
+
+    const time = postedTime;
     const username = document.querySelector('#new-comment__username').value;
     const message = document.querySelector('#new-comment__message').value;
 
@@ -105,6 +111,7 @@ const formEvent = form.addEventListener('submit', async event => {
 
     const addedComment = await addComment(comment);
     await addCommentsToDOM(addedComment); // wait to fire off add comments before getting
+    document.getElementById('form').reset(); // clears input fields after comments are submitted
     addCommentsToDOM(await getRemoteComments());
 });
 
@@ -119,8 +126,6 @@ export const addComment = async comment => {
         const res = await axios.post(`${BASEL_URL}`, comment);
         const addedComment = res.data;
 
-        console.log('Added new comment', addedComment);
-        console.log(addComment);
         return addedComment;
     } catch (e) {
         console.error(e);
@@ -128,7 +133,5 @@ export const addComment = async comment => {
 };
 
 /**
- * Convert time in to hh:mm:ss
  * Add styles
- * when message is sent, clear input values
  */

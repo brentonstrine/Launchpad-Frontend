@@ -1,0 +1,86 @@
+body,
+html {
+  font-size: 12px;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Open Sans", sans-serif;
+  font-size: 1.2rem;
+  line-height: 1.6rem;
+  color: #808080;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+label {
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+input {
+  display: block;
+  border: 1px solid #efefef;
+  height: 24px;
+  max-width: 400px;
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 12px;
+}
+
+textarea {
+  display: block;
+  border: 1px solid #efefef;
+  width: 400px;
+  max-width: 400px;
+  height: 200px;
+  margin-bottom: 12px;
+  resize: none;
+  padding: 12px;
+}
+
+.comment {
+  border-top: 1px solid #efefef;
+  padding: 12px;
+  width: 500px;
+  word-break: break-all;
+  opacity: 0.9;
+  transition: 0.3s;
+  border-left: 1px solid #efefef;
+  border-right: 3px solid #0693eb;
+}
+
+.comment:last-child {
+  border-bottom: 1px solid #efefef;
+}
+
+.comment:hover {
+  background-color: #f3f2ed;
+  opacity: 1;
+}
+
+.meta {}
+
+.time
+
+.user {
+  
+}
+
+.message {
+  
+}
+
+.comment.comment {
+ 
+}
+
+.comment .submit-comment {
+ 
+}
