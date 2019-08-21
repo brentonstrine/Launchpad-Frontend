@@ -3,7 +3,6 @@ import axios from "axios";
 import "./App.css";
 import Form from "./components/Form";
 import Comments from "./components/Comments";
-import SampleData from "./components/SampleData";
 import "./styles.css";
 
 class App extends React.Component {
@@ -15,9 +14,6 @@ class App extends React.Component {
       message: "",
       time: ""
     };
-
-    // url endpoint
-    this.url = "brentonstrine.com/launchpad/api/postComment";
   }
 
   render() {
@@ -35,6 +31,23 @@ class App extends React.Component {
     );
   }
 
+  componentDidMount = () => {
+    var path = "https://launchpad-e84b3.firebaseio.com/comments.json";
+    var resData = [];
+
+    axios
+      .get(path)
+      .then(
+        function(res) {
+          const keys = Object.values(res.data);
+          this.setState({ items: keys });
+        }.bind(this)
+      )
+      .catch(function(err) {
+        console.log(err);
+      });
+  };
+
   //handle username
   handleusernameChange = e => {
     e.persist();
@@ -47,11 +60,7 @@ class App extends React.Component {
     this.setState({ message: e.target.value });
   };
 
-  //Submit form
-  handleSubmit = e => {
-    e.preventDefault();
-    if (!this.state.message.length || !this.state.username.length) return;
-    var today = new Date();
+  handleTimeFormat = today => {
     var currentTime =
       (today.getHours() % 12) +
       ":" +
@@ -59,32 +68,23 @@ class App extends React.Component {
       ":" +
       today.getSeconds();
 
-    this.setState({ time: currentTime });
+    return currentTime;
+  };
+
+  //Submit form
+  handleSubmit = e => {
+    e.preventDefault();
+    if (!this.state.message.length || !this.state.username.length) return;
+    // this.handleTimeFormat(new Date());
 
     const newItem = {
       username: this.state.username,
       message: this.state.message,
-      time: currentTime
+      time: this.handleTimeFormat(new Date())
     };
 
-    this.setState({ items: this.state.items.concat(newItem) });
-    console.log("items ", this.state.items);
-
     this.storeData(newItem);
-    // this.firebaseUserAuth(newItem);
   };
-
-  //POST to database
-  // storeData = data => {
-  //   axios
-  //     .post("https://cors-anywhere.herokuapp.com/" + this.url, data)
-  //     .then(function(res) {
-  //       console.log(res);
-  //     })
-  //     .catch(function(err) {
-  //       console.log(err);
-  //     });
-  // };
 
   storeData = data => {
     var path = "https://launchpad-e84b3.firebaseio.com/comments.json";
