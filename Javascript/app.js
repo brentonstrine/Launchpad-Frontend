@@ -2,43 +2,92 @@ import axios from 'axios';
 
 const BASEL_URL = 'https://launchpad-e84b3.firebaseio.com/comments.json';
 
-const getComments = async () => {
+/**
+ * This function gets the comments database from Firebase. 
+ * We are returning the data in a comments object.  If we
+ * are experiencing any trouble, the console log will display
+ * any needed errors.
+ */
+
+const getRemoteComments = async () => {
     try {
         const res = await axios.get(`${BASEL_URL}`);
         const comments = res.data;
-        console.log(`GET: Here is the list of comments`, comments);
-
+        
         return comments;
     } catch(e) {
         console.error(e);
     }
 };
 
-const commentLi = item => {
-    const  li = document.createElement('li');
+/**
+ * This function creates our HTML message structure.
+ * It takes the function and breaks down the name, message, and date
+ * into a readable format for the front end.
+ */
 
-    li.appendChild(document.createTextNode(item.message));
-    return li;
+const getCommentHTML = comment => {
+    return `<div class="full-message">
+    <div class="user-name">${comment.username}</div>
+    <div class="time">${comment.time}</div>
+    <div class="message">${comment.message}</div>
+    </div>`;
 };
+
+/**
+ * Let's add our comment to the DOM (Document Object Model).
+ * First let's grab the comments and add them to a mutable
+ * variable called let.  This variable is an empty string because
+ * we are going to add to it once we take each comment by it's
+ * ID, create it with getCommentHTML() and return the results
+ * to holdComments for each comment that has returned from 
+ * the API/Database.
+ */
 
 const addCommentsToDOM = comments => {
-    const ul = document.querySelector('ul');
+    let holdComments = '';
 
-    if(Array.isArray(comments) && comments.length > 0) {
-        comments.map(comment => {
-            ul.appendChild(createLi(comment));
-        });
-    } else if (comments) {
-        ul.appendChild(commentLi(comments));
-    }
+    Object.keys(comments).forEach((commentId) => {
+
+        const fullMessage = comments[commentId];
+        const commentHTML = getCommentHTML(fullMessage);
+
+        holdComments+= commentHTML;
+
+    });
+
+
+    /**
+     * Let's create a message div and find the ID in our HTML
+     * called #meta and add the new comments we've just created
+     * above.
+     */
+    const div = document.querySelector('#meta');
+    div.innerHTML = holdComments;
 };
 
+/**
+ * Let's add the new comments by using the GET call from
+ * getRemoteComments, and wait for the new comments to appear
+ * in the DOM.
+ */
+
 const main = async () => {
-    addCommentsToDOM(await getComments());
+    addCommentsToDOM(await getRemoteComments());
 };
 
 main();
 
+/**
+ * When you are sending a message to the API and then
+ * storing it to the database, we want to get the value
+ * of the input field for the username, get the value
+ * of the message and the time the message was sent.
+ * Once we have that, let's craft a comment with those things
+ * to send back to the API.  Let's wait after we use addComment
+ * to make sure no one else is using the put method and get 
+ * the remote message. The API/database is the source of truth.
+ */
 
 const form = document.querySelector('form');
 const formEvent = form.addEventListener('submit', async event => {
@@ -55,8 +104,15 @@ const formEvent = form.addEventListener('submit', async event => {
     };
 
     const addedComment = await addComment(comment);
-    addCommentsToDOM(addedComment);
+    await addCommentsToDOM(addedComment); // wait to fire off add comments before getting
+    addCommentsToDOM(await getRemoteComments());
 });
+
+/**
+ * Let's take our newly crafted message and post it
+ * to the API/database using async.  If this does not work,
+ * let's return an error in the console.log.
+ */
 
 export const addComment = async comment => {
     try {
@@ -64,9 +120,15 @@ export const addComment = async comment => {
         const addedComment = res.data;
 
         console.log('Added new comment', addedComment);
-
+        console.log(addComment);
         return addedComment;
     } catch (e) {
         console.error(e);
     }
 };
+
+/**
+ * Convert time in to hh:mm:ss
+ * Add styles
+ * when message is sent, clear input values
+ */
