@@ -8,6 +8,7 @@ import "./styles.css";
 class App extends React.Component {
   constructor(props) {
     super(props);
+    this.path = "https://launchpad-e84b3.firebaseio.com/comments.json";
     this.state = {
       items: [],
       username: "",
@@ -32,20 +33,7 @@ class App extends React.Component {
   }
 
   componentDidMount = () => {
-    var path = "https://launchpad-e84b3.firebaseio.com/comments.json";
-    var resData = [];
-
-    axios
-      .get(path)
-      .then(
-        function(res) {
-          const keys = Object.values(res.data);
-          this.setState({ items: keys });
-        }.bind(this)
-      )
-      .catch(function(err) {
-        console.log(err);
-      });
+    this.getData(this.path);
   };
 
   //handle username
@@ -83,7 +71,22 @@ class App extends React.Component {
       time: this.handleTimeFormat(new Date())
     };
 
+    this.setState({ items: this.state.items.concat(newItem) });
     this.storeData(newItem);
+  };
+
+  getData = path => {
+    axios
+      .get(path)
+      .then(
+        function(res) {
+          const keys = Object.values(res.data);
+          this.setState({ items: keys });
+        }.bind(this)
+      )
+      .catch(function(err) {
+        console.log(err);
+      });
   };
 
   storeData = data => {

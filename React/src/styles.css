@@ -77,17 +77,17 @@ textarea {
   align-items: center;
   font-weight: 700;
 }
-.comments .user,
-.comments .date {
-  display: inline-block;
-  font-size: 0.8rem;
-  margin-left: 6px;
+
+.comment .user,
+.comment .date {
+  margin: 0;
 }
-.comments .user {
-  border-left: 1px solid #efefef;
-  border-right: 3px solid #34d00b;
+
+.comment .date {
+  margin-left: 10px;
 }
-.comments .message {
+
+.comment .message {
   margin-top: 10px;
 }
 
