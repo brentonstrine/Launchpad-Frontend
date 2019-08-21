@@ -1,5 +1,4 @@
 import React from "react";
-import "../styles.css";
 
 export default class Comments extends React.Component {
   render() {
@@ -8,10 +7,8 @@ export default class Comments extends React.Component {
         {this.props.items.map(item => (
           <div className="comment" key={item}>
             <div className="meta">
-              <div className="user">
-                {item.username}
-                <span className="date">{item.time}</span>
-              </div>
+              <p className="user">{item.username}</p>
+              <p className="date">{item.time}</p>
             </div>
             <div className="message">{item.message}</div>
           </div>
