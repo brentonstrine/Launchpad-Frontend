@@ -131,7 +131,3 @@ export const addComment = async comment => {
         console.error(e);
     }
 };
-
-/**
- * Add styles
- */
