@@ -10,8 +10,8 @@
       content="Web site created using create-react-app"
     />
 
-    <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-app.js"></script>
+    
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
@@ -41,5 +41,26 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#config-web-app -->
+
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyC8_rPdlUlOKRKPsJvS33owfYQBO-L82sY",
+        authDomain: "launchpad-e84b3.firebaseapp.com",
+        databaseURL: "https://launchpad-e84b3.firebaseio.com",
+        projectId: "launchpad-e84b3",
+        storageBucket: "launchpad-e84b3.appspot.com",
+        messagingSenderId: "617832347713",
+        appId: "1:617832347713:web:de6f71b756729484"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
+
   </body>
 </html>
