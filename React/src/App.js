@@ -4,11 +4,32 @@ import "./App.css";
 import Form from "./components/Form";
 import Comments from "./components/Comments";
 import "./styles.css";
+import * as firebase from "firebase/app";
+import "firebase/firestore";
+import "firebase/storage";
+import "firebase/database";
+
+// Initialize Firebase
+firebase.initializeApp({
+  apiKey: "AIzaSyC8_rPdlUlOKRKPsJvS33owfYQBO-L82sY",
+  authDomain: "launchpad-e84b3.firebaseapp.com",
+  databaseURL: "https://launchpad-e84b3.firebaseio.com",
+  projectId: "launchpad-e84b3",
+  storageBucket: "launchpad-e84b3.appspot.com",
+  messagingSenderId: "617832347713",
+  appId: "1:617832347713:web:de6f71b756729484"
+});
+
+//database instance
+var db = firebase.database();
 
 class App extends React.Component {
   constructor(props) {
     super(props);
+
+    //Firebase Realtime Database URL
     this.path = "https://launchpad-e84b3.firebaseio.com/comments.json";
+
     this.state = {
       items: [],
       username: "",
@@ -22,7 +43,7 @@ class App extends React.Component {
       <div className="form-container">
         <Comments
           items={this.state.items}
-          handleRemoveItem={this.handleRemoveItem}
+          handleDeleteItem={this.handleDeleteItem}
         />
         <Form
           handleSubmit={this.handleSubmit}
@@ -35,6 +56,7 @@ class App extends React.Component {
     );
   }
 
+  //Load data on initial mount
   componentDidMount = () => {
     this.getData(this.path);
   };
@@ -72,24 +94,37 @@ class App extends React.Component {
     this.setState({ items: this.state.items.concat(newItem) });
   };
 
-  handleRemoveItem = e => {
-    e.stopPropagation();
-    let id = e.target.parentElement.getAttribute("data-id");
-    console.log(e.target.parentElement);
+  //Remove item
+  handleDeleteItem = e => {
+    let id = e.target.parentElement.getAttribute("id");
+    db.ref("comments/" + id).remove();
+    this.getData(this.path);
   };
 
+  //Get all items
   getData = path => {
     axios
       .get(path)
       .then(res => {
-        const keys = Object.values(res.data);
-        this.setState({ items: keys });
+        var dataArray = [];
+        Object.keys(res.data).forEach(function(key) {
+          var dataObject = {
+            id: key,
+            username: res.data[key].username,
+            message: res.data[key].message,
+            time: res.data[key].time
+          };
+          dataArray.push(dataObject);
+        });
+
+        this.setState({ items: dataArray });
       })
       .catch(err => {
         console.log(err);
       });
   };
 
+  //Store all items
   storeData = (path, data) => {
     axios
       .post(path, data)

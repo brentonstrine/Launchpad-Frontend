@@ -60,6 +60,9 @@ textarea {
   transition: 0.3s;
   border-left: 1px solid #efefef;
   border-right: 3px solid #0693eb;
+  margin: 10px;
+  padding: 10px;
+  position: relative;
 }
 
 .comment:last-child {
@@ -89,16 +92,26 @@ textarea {
 
 .comment .message {
   margin-top: 10px;
-}
-
-.comment.comment {
-  margin: 10px;
-  padding: 10px;
+  max-width: 350px;
 }
 
 .comment .submit-comment {
   float: right;
   padding: 1rem;
+}
+
+.comment button.remove {
+  position: absolute;
+  right: 0;
+  height: 100%;
+  bottom: 0;
+  top: 0;
+  width: 10%;
+  background-color: #c4c4c4;
+  font-weight: bold;
+  border-bottom-style: none;
+  color: white;
+  cursor: pointer;
 }
 
 button.submit-comment {
