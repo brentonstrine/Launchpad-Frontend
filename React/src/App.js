@@ -20,11 +20,14 @@ class App extends React.Component {
   render() {
     return (
       <div className="form-container">
-        <Comments items={this.state.items} />
+        <Comments
+          items={this.state.items}
+          handleRemoveItem={this.handleRemoveItem}
+        />
         <Form
           handleSubmit={this.handleSubmit}
           handleusernameChange={this.handleusernameChange}
-          handleChange={this.handleChange}
+          handleComments={this.handleComments}
         />
 
         <div>Total comments: {this.state.items.length}</div>
@@ -42,20 +45,15 @@ class App extends React.Component {
     this.setState({ username: e.target.value });
   };
 
-  //handle comments
-  handleChange = e => {
+  //handle comments, set state
+  handleComments = e => {
     e.persist();
     this.setState({ message: e.target.value });
   };
 
+  //handle time format
   handleTimeFormat = today => {
-    var currentTime =
-      (today.getHours() % 12) +
-      ":" +
-      today.getMinutes() +
-      ":" +
-      today.getSeconds();
-
+    var currentTime = today.toLocaleTimeString();
     return currentTime;
   };
 
@@ -63,7 +61,6 @@ class App extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
     if (!this.state.message.length || !this.state.username.length) return;
-    // this.handleTimeFormat(new Date());
 
     const newItem = {
       username: this.state.username,
@@ -71,34 +68,37 @@ class App extends React.Component {
       time: this.handleTimeFormat(new Date())
     };
 
+    this.storeData(this.path, newItem);
     this.setState({ items: this.state.items.concat(newItem) });
-    this.storeData(newItem);
+  };
+
+  handleRemoveItem = e => {
+    e.stopPropagation();
+    let id = e.target.parentElement.getAttribute("data-id");
+    console.log(e.target.parentElement);
   };
 
   getData = path => {
     axios
       .get(path)
-      .then(
-        function(res) {
-          const keys = Object.values(res.data);
-          this.setState({ items: keys });
-        }.bind(this)
-      )
-      .catch(function(err) {
+      .then(res => {
+        const keys = Object.values(res.data);
+        this.setState({ items: keys });
+      })
+      .catch(err => {
         console.log(err);
       });
   };
 
-  storeData = data => {
-    var path = "https://launchpad-e84b3.firebaseio.com/comments.json";
-
+  storeData = (path, data) => {
     axios
       .post(path, data)
-      .then(function(res) {
-        console.log("data ", data);
+      .then(res => {
         console.log("res ", res);
+        var form = document.getElementById("form");
+        form.reset();
       })
-      .catch(function(err) {
+      .catch(err => {
         console.log(err);
       });
   };
