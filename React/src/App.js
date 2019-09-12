@@ -46,27 +46,14 @@ class App extends React.Component {
     this.setState({ message: e.target.value });
   };
 
-  handleTimeFormat = today => {
-    var currentTime =
-      (today.getHours() % 12) +
-      ":" +
-      today.getMinutes() +
-      ":" +
-      today.getSeconds();
-
-    return currentTime;
-  };
-
   //Submit form
   handleSubmit = e => {
     e.preventDefault();
     if (!this.state.message.length || !this.state.username.length) return;
-    // this.handleTimeFormat(new Date());
 
     const newItem = {
       username: this.state.username,
       message: this.state.message,
-      time: this.handleTimeFormat(new Date())
     };
 
     this.setState({ items: this.state.items.concat(newItem) });

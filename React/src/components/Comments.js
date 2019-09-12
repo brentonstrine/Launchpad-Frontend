@@ -8,7 +8,6 @@ export default class Comments extends React.Component {
           <div className="comment" key={item}>
             <div className="meta">
               <p className="user">{item.username}</p>
-              <p className="date">{item.time}</p>
             </div>
             <div className="message">{item.message}</div>
           </div>
