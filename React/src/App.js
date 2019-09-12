@@ -26,8 +26,6 @@ class App extends React.Component {
           handleusernameChange={this.handleusernameChange}
           handleChange={this.handleChange}
         />
-
-        <div>Total comments: {this.state.items.length}</div>
       </div>
     );
   }
