@@ -11,12 +11,14 @@ export default class Form extends React.Component {
           onChange={this.props.handleusernameChange}
           value={this.props.username}
           className="username"
+          required="true"
         />
         <textarea
           name="comment"
           onChange={this.props.handleComments}
           value={this.props.text}
           className="commentBox"
+          required="true"
         />
         <button className="submit-comment">Add comment</button>
       </form>
