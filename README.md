@@ -8,8 +8,3 @@ The front-end project for Launchpad
   <li>npm start</li>  
 </ul>
 
-# Vanilla JavaScript Version
-<ul>
-  <li>cd /Javascript</li>
-  <li>npm install</li>
-  <li>npm run dev</li>
