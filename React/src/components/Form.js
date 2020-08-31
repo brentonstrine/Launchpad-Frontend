@@ -3,7 +3,7 @@ import React from "react";
 export default class Form extends React.Component {
   render() {
     return (
-      <form onSubmit={this.props.handleSubmit} className="comment">
+      <form id="form" onSubmit={this.props.handleSubmit} className="comment">
         <h4>Comment</h4>
         <label>username</label>
         <input
@@ -14,7 +14,7 @@ export default class Form extends React.Component {
         />
         <textarea
           name="comment"
-          onChange={this.props.handleChange}
+          onChange={this.props.handleComments}
           value={this.props.text}
           className="commentBox"
         />

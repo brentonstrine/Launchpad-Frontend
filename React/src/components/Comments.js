@@ -5,14 +5,15 @@ export default class Comments extends React.Component {
     return (
       <div>
         {this.props.items.map(item => (
-          <div className="comment" key={item}>
+          <div className="comment" key={item.id} id={item.id}>
             <div className="meta">
-              <div className="user">
-                {item.username}
-                <span className="date">{item.time}</span>
-              </div>
+              <p className="user">{item.username}</p>
+              <p className="date">{item.time}</p>
             </div>
             <div className="message">{item.message}</div>
+            <button onClick={this.props.handleDeleteItem} className="remove">
+              X
+            </button>
           </div>
         ))}
       </div>

@@ -3,31 +3,52 @@ import axios from "axios";
 import "./App.css";
 import Form from "./components/Form";
 import Comments from "./components/Comments";
-import SampleData from "./components/SampleData";
 import "./styles.css";
+import * as firebase from "firebase/app";
+import "firebase/firestore";
+import "firebase/storage";
+import "firebase/database";
+
+// Initialize Firebase
+firebase.initializeApp({
+  apiKey: "AIzaSyC8_rPdlUlOKRKPsJvS33owfYQBO-L82sY",
+  authDomain: "launchpad-e84b3.firebaseapp.com",
+  databaseURL: "https://launchpad-e84b3.firebaseio.com",
+  projectId: "launchpad-e84b3",
+  storageBucket: "launchpad-e84b3.appspot.com",
+  messagingSenderId: "617832347713",
+  appId: "1:617832347713:web:de6f71b756729484"
+});
+
+//database instance
+var db = firebase.database();
 
 class App extends React.Component {
   constructor(props) {
     super(props);
+
+    //Firebase Realtime Database URL
+    this.path = "https://launchpad-e84b3.firebaseio.com/comments.json";
+
     this.state = {
       items: [],
       username: "",
       message: "",
       time: ""
     };
-
-    // url endpoint
-    this.url = "brentonstrine.com/launchpad/api/postComment";
   }
 
   render() {
     return (
       <div className="form-container">
-        <Comments items={this.state.items} />
+        <Comments
+          items={this.state.items}
+          handleDeleteItem={this.handleDeleteItem}
+        />
         <Form
           handleSubmit={this.handleSubmit}
           handleusernameChange={this.handleusernameChange}
-          handleChange={this.handleChange}
+          handleComments={this.handleComments}
         />
 
         <div>Total comments: {this.state.items.length}</div>
@@ -35,67 +56,84 @@ class App extends React.Component {
     );
   }
 
+  //Load data on initial mount
+  componentDidMount = () => {
+    this.getData(this.path);
+  };
+
   //handle username
   handleusernameChange = e => {
     e.persist();
     this.setState({ username: e.target.value });
   };
 
-  //handle comments
-  handleChange = e => {
+  //handle comments, set state
+  handleComments = e => {
     e.persist();
     this.setState({ message: e.target.value });
+  };
+
+  //handle time format
+  handleTimeFormat = today => {
+    var currentTime = today.toLocaleTimeString();
+    return currentTime;
   };
 
   //Submit form
   handleSubmit = e => {
     e.preventDefault();
     if (!this.state.message.length || !this.state.username.length) return;
-    var today = new Date();
-    var currentTime =
-      (today.getHours() % 12) +
-      ":" +
-      today.getMinutes() +
-      ":" +
-      today.getSeconds();
-
-    this.setState({ time: currentTime });
 
     const newItem = {
       username: this.state.username,
       message: this.state.message,
-      time: currentTime
+      time: this.handleTimeFormat(new Date())
     };
 
+    this.storeData(this.path, newItem);
     this.setState({ items: this.state.items.concat(newItem) });
-    console.log("items ", this.state.items);
-
-    this.storeData(newItem);
-    // this.firebaseUserAuth(newItem);
   };
 
-  //POST to database
-  // storeData = data => {
-  //   axios
-  //     .post("https://cors-anywhere.herokuapp.com/" + this.url, data)
-  //     .then(function(res) {
-  //       console.log(res);
-  //     })
-  //     .catch(function(err) {
-  //       console.log(err);
-  //     });
-  // };
+  //Remove item
+  handleDeleteItem = e => {
+    let id = e.target.parentElement.getAttribute("id");
+    db.ref("comments/" + id).remove();
+    this.getData(this.path);
+  };
 
-  storeData = data => {
-    var path = "https://launchpad-e84b3.firebaseio.com/comments.json";
+  //Get all items
+  getData = path => {
+    axios
+      .get(path)
+      .then(res => {
+        var dataArray = [];
+        Object.keys(res.data).forEach(function(key) {
+          var dataObject = {
+            id: key,
+            username: res.data[key].username,
+            message: res.data[key].message,
+            time: res.data[key].time
+          };
+          dataArray.push(dataObject);
+        });
 
+        this.setState({ items: dataArray });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  //Store all items
+  storeData = (path, data) => {
     axios
       .post(path, data)
-      .then(function(res) {
-        console.log("data ", data);
+      .then(res => {
         console.log("res ", res);
+        var form = document.getElementById("form");
+        form.reset();
       })
-      .catch(function(err) {
+      .catch(err => {
         console.log(err);
       });
   };
