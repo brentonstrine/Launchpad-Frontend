@@ -1,10 +1,8 @@
 # Launchpad-Frontend
 The front-end project for Launchpad
 
-# React Version
+# How to start it up
 <ul>
-  <li>cd /React</li>
   <li>npm install</li>
   <li>npm start</li>  
 </ul>
-
