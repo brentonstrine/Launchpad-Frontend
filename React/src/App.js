@@ -45,13 +45,14 @@ class App extends React.Component {
           items={this.state.items}
           handleDeleteItem={this.handleDeleteItem}
         />
-        <Form
-          handleSubmit={this.handleSubmit}
-          handleusernameChange={this.handleusernameChange}
-          handleComments={this.handleComments}
-        />
+          <Form
+            handleSubmit={this.handleSubmit}
+            handleusernameChange={this.handleusernameChange}
+            handleComments={this.handleComments}
+          />
 
-        <div>Total comments: {this.state.items.length}</div>
+          <div>Total comments: {this.state.items.length}</div>
+          <button onClick={this.handleDeleteAll} class="delete-all">Delete All</button>
       </div>
     );
   }
@@ -97,9 +98,15 @@ class App extends React.Component {
   //Remove item
   handleDeleteItem = e => {
     let id = e.target.parentElement.getAttribute("id");
+    console.log('id ', id);
     db.ref("comments/" + id).remove();
     this.getData(this.path);
   };
+
+  //Remove all items 
+  handleDeleteAll = () => {
+    console.log('should delete all comments..');
+  }
 
   //Get all items
   getData = path => {

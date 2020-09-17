@@ -10,6 +10,7 @@ body {
   font-size: 1rem;
   line-height: 1.6rem;
   color: #808080;
+  background-color: #ffdfb7;
 }
 
 label {
@@ -34,6 +35,11 @@ input {
   flex-direction: column;
 }
 
+.form-container-inner {
+  display: flex;
+  flex-direction: column;
+}
+
 textarea {
   display: block;
   border: 1px solid #efefef;
@@ -42,7 +48,7 @@ textarea {
   height: 200px;
   margin-bottom: 12px;
   resize: none;
-  padding: 12px;
+  padding: 12px;  
 }
 
 .container {
@@ -63,6 +69,7 @@ textarea {
   margin: 10px;
   padding: 10px;
   position: relative;
+  background-color: white;
 }
 
 .comment:last-child {
@@ -114,7 +121,7 @@ textarea {
   cursor: pointer;
 }
 
-button.submit-comment {
+button.submit-comment, button.delete-all {
   background-color: #0693eb;
   border: none;
   border-radius: 4px;
@@ -128,6 +135,9 @@ button.submit-comment {
   outline: none;
   text-transform: uppercase;
   user-select: none;
+}
+button.delete-all {
+  background-color: tomato;
 }
 
 button.submit-comment:hover {
