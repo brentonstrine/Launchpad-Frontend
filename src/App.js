@@ -50,8 +50,6 @@ class App extends React.Component {
           handleusernameChange={this.handleusernameChange}
           handleComments={this.handleComments}
         />
-
-        <div>Total comments: {this.state.items.length}</div>
       </div>
     );
   }
@@ -73,12 +71,15 @@ class App extends React.Component {
     this.setState({ message: e.target.value });
   };
 
+<<<<<<< HEAD
+=======
   //handle time format
   handleTimeFormat = today => {
     var currentTime = today.toLocaleTimeString();
     return currentTime;
   };
 
+>>>>>>> 401aac753b95b2acba138687a41fe38d7d2ac700
   //Submit form
   handleSubmit = e => {
     e.preventDefault();
@@ -87,7 +88,6 @@ class App extends React.Component {
     const newItem = {
       username: this.state.username,
       message: this.state.message,
-      time: this.handleTimeFormat(new Date())
     };
 
     this.storeData(this.path, newItem);
